@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>居析 Jiaxi | 租屋生活情報</title>
+    <meta name="description" content="輸入租屋地點，快速整理交通、天氣、租金與生活機能。">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="居析首頁">
+        <span class="brand-home" aria-hidden="true"></span>
+        <span>居析 <small>Jiaxi</small></span>
+      </a>
+      <nav class="nav-links" aria-label="主要導覽">
+        <a class="active" href="#">找區域</a>
+        <a href="#features">生活機能</a>
+        <a href="#sources">資料來源</a>
+      </nav>
+      <button class="member-button" type="button">會員登入</button>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-content">
+          <div class="eyebrow"><span></span>AI 租屋生活情報</div>
+          <h1>找到適合你的<br><strong>理想生活圈</strong></h1>
+          <p class="hero-copy">整合租金、交通、天氣、生活機能與空氣品質，<br>讓你不只找到房子，更找到適合的生活。</p>
+          <form class="search-box" id="area-form">
+            <label class="sr-only" for="location-input">輸入想租房的區域</label>
+            <span class="pin-icon" aria-hidden="true"></span>
+            <input id="location-input" name="location" type="text" value="台北車站附近" placeholder="輸入捷運站、地標或行政區" autocomplete="off">
+            <button type="submit">分析此區域 <span>→</span></button>
+          </form>
+          <div class="quick-search" aria-label="熱門區域">
+            <span>熱門搜尋</span>
+            <button type="button" data-area="中山附近">中山</button>
+            <button type="button" data-area="公館附近">公館</button>
+            <button type="button" data-area="板橋車站附近">板橋車站</button>
+          </div>
+        </div>
+
+        <div class="preview-column">
+          <p class="preview-label">區域生活速報 <span id="report-time">{{ initial_area.generated_at }} 更新</span></p>
+          <article class="area-card" aria-live="polite">
+            <div class="area-heading">
+              <div class="location-badge" aria-hidden="true"><span></span></div>
+              <div>
+                <h2 id="area-title">{{ initial_area.area }}附近</h2>
+                <p id="area-district">{{ initial_area.district }}</p>
+              </div>
+              <span class="score-badge">交通 <b id="traffic-score">{{ initial_area.traffic_score }}</b></span>
+            </div>
+            <div class="fact-grid">
+              <div class="fact weather">
+                <span class="fact-icon">☼</span>
+                <small>今日天氣</small>
+                <strong id="weather-value">{{ initial_area.weather }}</strong>
+              </div>
+              <div class="fact rent">
+                <span class="fact-icon">$</span>
+                <small>套房月租概估</small>
+                <strong id="rent-value">{{ initial_area.rent }}</strong>
+              </div>
+              <div class="fact air">
+                <span class="fact-icon">葉</span>
+                <small>空氣品質</small>
+                <strong id="air-value">{{ initial_area.air }}</strong>
+              </div>
+            </div>
+            <div class="card-divider"></div>
+            <div class="card-block">
+              <h3>交通與生活機能</h3>
+              <p id="area-summary">{{ initial_area.summary }}</p>
+            </div>
+            <div class="facility-list" id="facility-list">
+              {% for facility in initial_area.facilities %}
+              <div class="facility"><b>{{ facility.icon }}</b><span>{{ facility.name }}<small>{{ facility.detail }}</small></span></div>
+              {% endfor %}
+            </div>
+            <p class="demo-note">目前為介面示意資料，Agent 串接後將更新為即時公開資料</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="feature-strip" id="features">
+        <div class="feature-intro">
+          <p>一次掌握</p>
+          <h2>租屋前需要知道的生活情報</h2>
+        </div>
+        <div class="feature-item"><b>☁</b><strong>天氣</strong><span>溫度、降雨機率</span></div>
+        <div class="feature-item"><b>$</b><strong>租金行情</strong><span>實價與區間</span></div>
+        <div class="feature-item"><b>🚇</b><strong>交通</strong><span>捷運、公車</span></div>
+        <div class="feature-item"><b>＋</b><strong>生活機能</strong><span>商店、醫院</span></div>
+        <div class="feature-item"><b>葉</b><strong>空氣品質</strong><span>AQI 指標</span></div>
+      </section>
+
+      <section class="data-flow" id="sources">
+        <p class="eyebrow small"><span></span>Agent Ready</p>
+        <h2>之後可接入的公開資料流程</h2>
+        <div class="flow-items">
+          <span>地點解析 / Geocode</span>
+          <i>→</i>
+          <span>氣象署 Weather</span>
+          <i>→</i>
+          <span>TDX 交通設施</span>
+          <i>→</i>
+          <span>租金與 AQI</span>
+          <i>→</i>
+          <span>LLM 統整建議</span>
+        </div>
+      </section>
+    </main>
+
+    <aside class="chatbot" id="chatbot" aria-label="AI 租屋顧問">
+      <section class="chat-panel" id="chat-panel" aria-hidden="true">
+        <header>
+          <div class="bot-avatar small-avatar"><span></span></div>
+          <div><strong>居析小助手</strong><small>AI 租屋顧問 · 示意版</small></div>
+          <button id="chat-close" type="button" aria-label="收合對話">×</button>
+        </header>
+        <div class="messages" id="messages">
+          <div class="message bot">嗨！告訴我想租屋的區域，我可以先幫你整理租金、交通與生活機能。</div>
+        </div>
+        <div class="chat-suggestions">
+          <button type="button">台北車站租金如何？</button>
+          <button type="button">公館交通方便嗎？</button>
+        </div>
+        <form id="chat-form">
+          <label class="sr-only" for="chat-input">詢問租屋建議</label>
+          <input id="chat-input" type="text" placeholder="問問租屋生活建議..." autocomplete="off">
+          <button type="submit" aria-label="送出訊息">↑</button>
+        </form>
+      </section>
+      <button class="chat-head" id="chat-toggle" type="button" aria-label="開啟 AI 租屋顧問" aria-expanded="false">
+        <span class="head-bubble">需要租屋建議？</span>
+        <span class="bot-avatar"><span></span></span>
+      </button>
+    </aside>
+
+    <script>
+      window.INITIAL_AREA = {{ initial_area | tojson }};
+    </script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  </body>
+</html>

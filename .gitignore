@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Local configuration and API secrets
+.env
+.env.*
+!.env.example
+
+# IDE/editor settings
+.vscode/
+.idea/
+
+# Test and build artifacts
+.pytest_cache/
+coverage/
+dist/
+build/
