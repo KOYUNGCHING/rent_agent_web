@@ -59,4 +59,42 @@ python3 app.py
 
 ## GitHub 協作
 
-第一次使用 GitHub、如何下載專案、改程式與上傳更新，請見 [docs/GITHUB_TEAM_GUIDE.md](docs/GITHUB_TEAM_GUIDE.md)。
+Repository 網址：<https://github.com/KOYUNGCHING/rent_agent_web>
+
+### Mac / Linux 第一次下載與執行
+
+```bash
+git clone https://github.com/KOYUNGCHING/rent_agent_web.git
+cd rent_agent_web
+python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install -r requirements.txt
+python3 app.py
+```
+
+瀏覽器開啟 `http://127.0.0.1:5000` 就能查看目前網站。
+
+### Windows 第一次下載與執行
+
+1. 安裝 [Git for Windows](https://git-scm.com/download/win) 與 [Python](https://www.python.org/downloads/windows/)。
+2. 開啟 `PowerShell`，輸入以下指令：
+
+```powershell
+git clone https://github.com/KOYUNGCHING/rent_agent_web.git
+cd rent_agent_web
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+py -m pip install -r requirements.txt
+py app.py
+```
+
+若 PowerShell 不允許啟動虛擬環境，可先在同一個視窗執行：
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\.venv\Scripts\Activate.ps1
+```
+
+瀏覽器開啟 `http://127.0.0.1:5000`。
+
+不要將 API key、token 或 `.env` 上傳到 GitHub。
